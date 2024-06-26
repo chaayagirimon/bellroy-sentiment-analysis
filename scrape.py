@@ -6,7 +6,7 @@ Created on
 
 source:
 https://praw.readthedocs.io/en/stable/index.html
-    
+https://towardsdatascience.com/scraping-reddit-data-1c0af3040768
 '''
 import pandas as pd
 import os
@@ -20,7 +20,9 @@ YOUR_CLIENT_ID        = os.environ.get("YOUR_CLIENT_ID")
 YOUR_CLIENT_SECRET        = os.environ.get("YOUR_CLIENT_SECRET")
 YOUR_USER_AGENT        = os.environ.get("YOUR_USER_AGENT")
 
-df_main = pd.read_csv("bellroy.csv")
+csv_name = "bellroy.csv"
+
+df_main = pd.read_csv(csv_name)
 
 reddit = praw.Reddit(client_id=YOUR_CLIENT_ID,
                      client_secret=YOUR_CLIENT_SECRET,
@@ -39,4 +41,8 @@ for post in posts:
 
 df = pd.DataFrame(data)
 # print(df.head())
-df.to_csv("bellroy.csv", index=False, mode='a')
+df.to_csv(csv_name, index=False, mode='a', header=False)
+
+'''
+need to generalise
+'''

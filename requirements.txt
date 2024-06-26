@@ -2,5 +2,5 @@ praw
 pandas
 textblob
 matplotlib  
-nltk
-
+nltk    
+demoji
