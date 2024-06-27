@@ -30,34 +30,36 @@ reddit = praw.Reddit(client_id=YOUR_CLIENT_ID,
                      client_secret=YOUR_CLIENT_SECRET,
                      user_agent=YOUR_USER_AGENT)
 
-posts = reddit.subreddit("BuyItForLife+ManyBaggers+wallets+backpacks").search('Bellroy', limit=3)
+def scrape(post):
+    return {
+            'title': post.title,
+            'selftext': post.selftext,
+            'comments': [comment.body for comment in post.comments.list() if hasattr(comment, 'body')],
+            'comment_upvotes': [comment.score for comment in post.comments.list() if hasattr(comment, 'score')],
+            'comments_utc': [str(datetime.fromtimestamp(comment.created_utc)) for comment in post.comments.list() if hasattr(comment, 'created_utc')], 
+            'upvotes': post.score,
+            'time_stamp': datetime.fromtimestamp(post.created_utc)
+            }
 
-data = []
-comments_upvotes = []
-comments_utc = []
-for post in posts:
-    # if post.title not in df_main['title']:
-    # for comment in post.comments.list():
-    #     if hasattr(comment, 'created_utc'):
-    #         date_temp = datetime.fromtimestamp(comment.created_utc)
-    #         comments_utc.append(str(date_temp))
-    # print(comments_utc)
-    comments_utc = []
-    data.append({
-        'title': post.title,
-        'selftext': post.selftext,
-        'comments': [comment.body for comment in post.comments.list() if hasattr(comment, 'body')],
-        'comment_upvotes': [comment.score for comment in post.comments.list() if hasattr(comment, 'score')],
-        # 'comments_utc': [datetime.fromtimestamp(comment.created_utc) for comment in post.comments.list() if hasattr(comment, 'created_utc')], 
-        # 'comments_utc': comments_utc,
-        'upvotes': post.score,
-        'time_stamp': datetime.fromtimestamp(post.created_utc)
-    })
+def main():
+    posts = reddit.subreddit("BuyItForLife+ManyBaggers+wallets+backpacks+EDC+onebag+EDCexchange+GooglePixel+frugalmalefashion").search('Bellroy', limit=1000)
 
-df = pd.DataFrame(data)
-# print(df.head())
-# df.to_csv(csv_name, index=False, mode='a', header=False)
-df.to_csv(csv_name, index=False)
+    data = []
+    # print(df_main['title'].head())
+    for post in posts:
+        # if post.title not in df_main['title'].tolist():
+            print(post.title)
+            data.append(scrape(post))
+
+    df = pd.DataFrame(data)
+    # print(df.head())
+    # df.to_csv(csv_name, index=False, mode='a', header=False)
+    df.to_csv(csv_name, index=False)
+
+if __name__ == "__main__":
+    main()
+
+
 '''
 1.need to generalise
 '''
