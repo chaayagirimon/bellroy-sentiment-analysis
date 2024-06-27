@@ -1,4 +1,4 @@
 .env
 */
-bellroy.csv
+*.csv
 .DS_Store
