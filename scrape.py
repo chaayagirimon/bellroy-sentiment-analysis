@@ -22,9 +22,7 @@ YOUR_CLIENT_ID        = os.environ.get("YOUR_CLIENT_ID")
 YOUR_CLIENT_SECRET        = os.environ.get("YOUR_CLIENT_SECRET")
 YOUR_USER_AGENT        = os.environ.get("YOUR_USER_AGENT")
 
-csv_name = "bellroy.csv"
-
-# df_main = pd.read_csv(csv_name)   
+csv_name = "bellroy.csv"    
 
 reddit = praw.Reddit(client_id=YOUR_CLIENT_ID,
                      client_secret=YOUR_CLIENT_SECRET,
@@ -36,25 +34,39 @@ def scrape(post):
             'selftext': post.selftext,
             'comments': [comment.body for comment in post.comments.list() if hasattr(comment, 'body')],
             'comment_upvotes': [comment.score for comment in post.comments.list() if hasattr(comment, 'score')],
-            'comments_utc': [str(datetime.fromtimestamp(comment.created_utc)) for comment in post.comments.list() if hasattr(comment, 'created_utc')], 
+            'comments_utc': [str(datetime.fromtimestamp(comment.created_utc)) 
+                            for comment in post.comments.list() if hasattr(comment, 'created_utc')], 
             'upvotes': post.score,
             'time_stamp': datetime.fromtimestamp(post.created_utc)
             }
 
-def main():
-    posts = reddit.subreddit("BuyItForLife+ManyBaggers+wallets+backpacks+EDC+onebag+EDCexchange+GooglePixel+frugalmalefashion").search('Bellroy', limit=1000)
-
+def not_exists(posts):
     data = []
-    # print(df_main['title'].head())
     for post in posts:
-        # if post.title not in df_main['title'].tolist():
             print(post.title)
             data.append(scrape(post))
 
     df = pd.DataFrame(data)
-    # print(df.head())
-    # df.to_csv(csv_name, index=False, mode='a', header=False)
     df.to_csv(csv_name, index=False)
+    
+def if_exists(posts, df_main):
+    data = []
+    for post in posts:
+        if post.title not in df_main['title'].tolist():
+            print(post.title)
+            data.append(scrape(post))
+    df = pd.DataFrame(data)
+    df.to_csv(csv_name, index=False, mode='a', header=False)
+
+def main():
+    posts = reddit.subreddit("BuyItForLife+ManyBaggers+wallets+backpacks+EDC+onebag+EDCexchange+GooglePixel+frugalmalefashion").search('Bellroy', limit=1000)
+
+    if not os.path.isfile(csv_name):
+        open(csv_name, mode='x')
+        not_exists(posts)
+    else:
+        df_main = pd.read_csv(csv_name) 
+        if_exists(posts, df_main)   
 
 if __name__ == "__main__":
     main()
