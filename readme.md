@@ -8,13 +8,10 @@ First we need to get the authentication information to create an instance:
 (refer to : https://towardsdatascience.com/scraping-reddit-data-1c0af3040768)
 - go to this [page](https://www.reddit.com/prefs/apps).
 - click on "create another app" or "create app".
-![start](pics/start.png "start")
 - fill the form that pops up. 
     - select on script radio button.
     - choose redirect uri as: http://localhost:8080.
-![form](pics/form.png "form")
 - copy the information and add it to the .env file (using the .env.sample as a reference).
-![authentication](pics/authentication.png "authentication")
 
 Next, if needed you can add more subreddits to line 62 in scrap.py:
 ```
