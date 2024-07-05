@@ -13,7 +13,7 @@ First we need to get the authentication information to create an instance:
     - choose redirect uri as: http://localhost:8080.
 - copy the information and add it to the .env file (using the .env.sample as a reference).
 
-Next, if needed you can add more subreddits to line 62 in scrap.py:
+Next, if needed you can add more subreddits to line 62 in scrape.py:
 ```
 posts = reddit.subreddit("BuyItForLife+ManyBaggers+wallets+backpacks+EDC+onebag+EDCexchange+GooglePixel+frugalmalefashion").search('Bellroy', limit=1000)
 ```
