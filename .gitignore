@@ -1,6 +1,5 @@
 .env
 .ipynb_checkpoints/
-pics/
 *.csv
 .DS_Store
 *.html
