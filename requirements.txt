@@ -4,3 +4,5 @@ textblob
 matplotlib  
 nltk    
 demoji
+notebook
+python-dotenv

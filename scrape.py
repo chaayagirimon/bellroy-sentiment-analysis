@@ -10,11 +10,11 @@ https://towardsdatascience.com/scraping-reddit-data-1c0af3040768
 '''
 from datetime import datetime
 import os
+from dotenv import load_dotenv
 
 import pandas as pd
 
 import praw
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -70,8 +70,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-'''
-1.need to generalise
-'''
